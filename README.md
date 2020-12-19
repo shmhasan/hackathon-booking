@@ -72,3 +72,9 @@ curl -X POST \
 ```
 
 - Use the token to pass from the swagger authorize button
+
+
+### Personal Information
+
+Name: A S M MEHEDI HASAN SHUVO
+Email: hasanasmmehedi@gmail.com
