@@ -22,6 +22,7 @@ export const GenerateToken = async (data: any):Promise<TokenDTO> => {
 };
 
 export const ValidateToken = async (token: TokenDTO):Promise<any> => {
+
     return new Promise((resolve, reject)=> {
         try {
             const verified = jwt.verify(token.token.toString(), SUPER_SECRET_SALT);

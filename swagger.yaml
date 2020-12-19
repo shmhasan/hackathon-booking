@@ -1,24 +1,325 @@
 openapi: 3.0.0
 info:
   title: Hotel Management
-  description: 
+  description: Hotel Management Rest 
   version: 0.0.1
 servers:
-  - url: http://api.annonbooking.com/v1
+  - url: http://192.168.68.105:3000
     description: Optional server description, e.g. Main (production) server
   - url: http://staging-api.example.com
     description: Optional server description, e.g. Internal staging server for testing
 paths:
-  /users:
+  /rooms:
     get:
-      summary: Returns a list of users.
-      description: Optional extended description in CommonMark or HTML.
+      tags:
+        - Rooms
+      summary: Returns a list of rooms
+      description: Returns a list of rooms
       responses:
-        '200':    # status code
-          description: A JSON array of user names
+        '200':
+          description: "List of rooms are returned"
           content:
             application/json:
               schema: 
-                type: array
-                items: 
-                  type: string
+                type: object
+                properties:
+                  message: 
+                    type: string
+                  data: 
+                    type: array
+                    items:
+                      type: object
+                      properties: 
+                        room_number:
+                          type: string
+                        price:
+                          type: number
+                        locked:
+                          type: string
+                        max_persons:
+                          type: integer
+                        room_type:
+                          type: string
+        '204':
+          description: "List of rooms are returned"
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  message: 
+                    type: string
+                  data: 
+                    type: array
+                    items:
+                      type: object
+                      properties: 
+                        room_number:
+                          type: string
+                        price:
+                          type: number
+                        locked:
+                          type: string
+                        max_persons:
+                          type: integer
+                        room_type:
+                          type: string
+    post:
+      tags:
+        - Rooms
+      summary: Create a room object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Room'
+      responses:
+        '201':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '400':
+          description: "Bad Payload"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+    put:
+      tags:
+        - Rooms
+      summary: Update a room object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Room'
+      responses:
+        '201':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '400':
+          description: "Bad Payload"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+  /rooms/{room_number}:
+    get:
+      parameters:
+        - in: path
+          name: room_number
+          schema:
+            type: string
+          required: true
+          description: Room number
+      tags:
+        - Rooms
+      summary: Returns room by a room number
+      description: Returns room by a room number
+      responses:
+        '200':
+          description: "A room object is returned"
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  message: 
+                    type: string
+                  data: 
+                    type: array
+                    items:
+                      type: object
+                      properties: 
+                        room_number:
+                          type: string
+                        price:
+                          type: number
+                        locked:
+                          type: string
+                        max_persons:
+                          type: integer
+                        room_type:
+                          type: string
+        '204':
+          description: "No rooms found"
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  message: 
+                    type: string
+                  data: 
+                    type: array
+                    items:
+                      type: object
+                      properties: 
+                        room_number:
+                          type: string
+                        price:
+                          type: number
+                        locked:
+                          type: string
+                        max_persons:
+                          type: integer
+                        room_type:
+                          type: string
+    delete:
+      tags:
+        - Rooms
+      summary: Deletes a Room
+      parameters:
+        - in: path
+          name: room_number
+          schema:
+            type: string
+          required: true
+          description: Room number
+
+      responses:
+        '200':
+          description: Return a success status code
+        '404':
+          description: No Rooms found
+  
+  /customer:
+    get:
+      tags:
+       - Customer
+      summary: Customer end poing
+      responses:
+        '200':
+          description: "List of rooms are returned"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Customer'
+    post:
+      tags:
+       - Customer
+      summary: Create Customer object
+      requestBody:
+        description: Customer
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: "List of rooms are returned"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Customer'
+    put:
+      tags:
+       - Customer
+      summary: Update Customer object
+      requestBody:
+        description: Customer
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: "List of rooms are returned"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Customer'
+                
+  /customer/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Customer id
+      tags:
+       - Customer
+      summary: Get a single customer object
+      responses:
+        '200':
+          description: "List of rooms are returned"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Customer'
+    delete:
+      tags:
+        - Customer
+      summary: Deletes a customer
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Customer id
+
+      responses:
+        '200':
+          description: Return a success status code
+        '404':
+          description: No Rooms found
+  
+                
+
+
+
+components:
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Room:
+      properties:
+        id:
+          type: number
+        room_number:
+          type: string
+        price:
+          type: number
+        locked:
+          type: string
+        max_persons:
+          type: integer
+        room_type:
+          type: string
+    Customer:
+      properties:
+        id:
+          type: number
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: email
+
+security:
+  - bearerAuth: []

@@ -6,6 +6,9 @@ import {Logger } from "./config/Logger";
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
 import { AuthRouter } from './auth/router';
+import { RoomRouter } from './rooms/router';
+import { CustomerRouter } from './customers/router';
+import { BookingRouter } from './bookings/router';
 
 const swaggerDocument = YAML.load(__dirname + "/../swagger.yaml");
 
@@ -22,6 +25,9 @@ App.use(bodyParser.urlencoded({ extended: true }));
 App.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 App.use("/auth-users", AuthRouter);
+App.use("/rooms", RoomRouter);
+App.use("/customers", CustomerRouter);
+App.use("/bookings", BookingRouter);
 
 global["logger"] = Logger
 
