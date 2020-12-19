@@ -40,6 +40,7 @@ CustomerRouter.get("/:customer_id?", async (request: Request, response: Response
     } catch (error) {
         status = 204;
         responseDTO.message = error.message;
+        Logger.info("Exception "+error.message);
     }
 
     response.status(status).json(responseDTO);
@@ -112,6 +113,7 @@ CustomerRouter.put("/", checkSchema(CustomerUpdateSchema), async (request:Reques
             } catch (error) {
                 status = 400;
                 responseDTO.message = error.message;
+                Logger.info("Exception "+error.message);
             }
         }else {
             responseDTO.message = "Could not find Customer";

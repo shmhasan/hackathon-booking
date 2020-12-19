@@ -19,7 +19,7 @@ export class Booking extends BaseEntity {
     @Column({nullable: false, type: "datetime"})
     arrival: Date;
 
-    @Column({nullable: false, type: "datetime"})
+    @Column({nullable: true, type: "datetime"})
     checkout: Date;
 
     @Column({nullable: false, type: "datetime"})
@@ -35,6 +35,6 @@ export class Booking extends BaseEntity {
      * payment status can be PENDING/PARTIAL/DONE
      */
     @Column({nullable: false, default: "PENDING", type: "varchar"})
-    payment_status: String
+    payment_status: String;
 
 }

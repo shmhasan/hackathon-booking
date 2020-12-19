@@ -116,7 +116,7 @@ paths:
                 properties:
                   message: 
                     type: string
-  /rooms/{room_number}:
+  /rooms/:{room_number}:
     get:
       parameters:
         - in: path
@@ -196,7 +196,7 @@ paths:
         '404':
           description: No Rooms found
   
-  /customer:
+  /customers:
     get:
       tags:
        - Customer
@@ -243,7 +243,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/Customer'
                 
-  /customer/{id}:
+  /customers/:{id}:
     get:
       parameters:
         - in: path
@@ -279,6 +279,146 @@ paths:
           description: Return a success status code
         '404':
           description: No Rooms found
+          
+  /bookings:
+    get:
+      tags:
+        - Bookings
+      responses:
+        '200':
+          description: Returns all the bookings
+        '204':
+          description: No contents found
+        '404':
+          description: Resource not found
+    post:
+      tags:
+        - Bookings
+      summary: Create a booking
+      requestBody:
+        required: true
+        description: Booking
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+      responses:
+        '200':
+          description: Created
+        '400':
+          description: Bad payload
+          
+    put:
+      summary: Update a booking 
+      tags:
+        - Bookings
+      requestBody:
+        description: Booking
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+      responses:
+        '200':
+          description: Created
+        '400':
+          description: Bad payload
+          
+  /bookings/{id}:
+    delete:
+      tags:
+        - Bookings
+      summary: Deletes a booking
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Booking id
+
+      responses:
+        '200':
+          description: Return a success status code
+        '404':
+          description: No Booking found
+        '400':
+          description: Bad API Param
+    get:
+      tags:
+        - Bookings
+      summary: Get a booking by it's id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Booking id
+
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        '404':
+          description: No Booking found
+        '400':
+          description: Bad API Param
+  /bookings/{id}/payment:
+    post:
+      tags:
+        - Bookings
+      summary: Make a payment for a booking
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        description: Make a payment
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+      responses:
+        '200':
+          description: Return a success status code
+        '404':
+          description: No Booking found
+        '400':
+          description: Bad API Param
+          
+  /bookings/{id}/checkout:
+    post:
+      tags:
+        - Bookings
+      summary: Checkout From Hotel
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          
+      responses:
+        '200':
+          description: Return a success status code
+        '404':
+          description: No Booking found
+        '400':
+          description: Bad API Param
+  
+
+        
+          
   
                 
 
@@ -288,6 +428,10 @@ components:
   responses:
     UnauthorizedError:
       description: Access token is missing or invalid
+    '201':
+      description: Accepted
+    '400':
+      description: Payload not valid
   securitySchemes:
     bearerAuth:
       type: http
@@ -319,7 +463,20 @@ components:
         phone:
           type: string
         email:
-          type: email
+          type: string
+          
+    Booking:
+      properties:
+        id:
+          type: number
+        room_number:
+          type: string
+        customer_id:
+          type: number
+        arrival:
+          type: string
+        booking_type:
+          type: string
 
 security:
   - bearerAuth: []

@@ -1,10 +1,13 @@
+import { json } from "body-parser";
 import { Request, Response, Router } from "express";
 import { checkSchema, param, validationResult } from "express-validator";
+import { Logger } from "../../config/Logger";
 import { Customer } from "../../customers/entities/Customer";
 import { Payment } from "../../payment/entities/Payment";
 import { Room } from "../../rooms/entities/Room";
 import { Booking } from "../entities/Booking";
 import { BookingSchema } from "../validator/BookingSchema";
+import * as _ from "underscore";
 
 export const BookingRouter = Router();
 
@@ -41,6 +44,7 @@ BookingRouter.get("/:id?", async (request: Request, response: Response) => {
         }
     } catch (error) {
         responseDTO.message = error.message;
+        Logger.info("Exception "+error.message);
     }
 
     response.status(status).json(responseDTO);
@@ -78,16 +82,20 @@ BookingRouter.post("/", checkSchema(BookingSchema), async (request: Request, res
             booking.payment_status = "PENDING";
     
             try {
-                await booking.save();
-                responseDTO.data.push(payload);
+
                 //set room is locked
                 room.locked = "Y";
-                room.save();
+                await room.save();
+
+                await booking.save();
+                responseDTO.data.push(payload);
+
 
                 status = 200;
             } catch (error) {
                 status = 400;
                 responseDTO.message = error.message;
+                Logger.info("Exception "+error.message);
             }
         }else {
             status = 400;
@@ -110,7 +118,9 @@ BookingRouter.post("/", checkSchema(BookingSchema), async (request: Request, res
  *   booking_id
  * }
  */
-BookingRouter.post("/:id/checkout", [param("id", "ID is missing")],async (request: Request, response: Response)=> {
+BookingRouter.post("/:id/checkout", [param("id", "ID is missing")],
+async (request: Request, response: Response)=> {
+
     const errors = validationResult(request);
     const responseDTO = {
         message: ""
@@ -118,17 +128,33 @@ BookingRouter.post("/:id/checkout", [param("id", "ID is missing")],async (reques
     let status = 200;
     if(errors.isEmpty()) {
         try {
-            const booking = await Booking.findOne({id: request.params.id});
-            if(booking && booking.payment_status === "DONE") {
-                const room = await Room.findOne({where: {id: booking.room.id}});
-                room.locked = "N";
-                room.save();
+            console.log("REQUEST", request.params);
+            const booking = await Booking.findOne({where: {id: request.params.id}, relations: ["room", "customer"]});
+            
+            if(!booking) {
+                responseDTO.message = "No bookings were found"; 
+                status = 404;
+            }else if(booking && booking.payment_status === "DONE") {
+
+                if(isNaN(Date.parse(booking.checkout.toString()))) {
+                    const room = await Room.findOne({where: {id: booking.room.id}});
+                    room.locked = "N";
+                    await room.save();
+                    Logger.info("Checkout out ");
+                    booking.checkout = new Date();
+                    await booking.save();
+                    responseDTO.message = "Successfully checkout"; 
+                }else {
+                    responseDTO.message = "Already checked out"; 
+                }
+                
             }else {
                 status = 200;
                 responseDTO.message = "Payment is not yet completed"; 
             }
         } catch (error) {
            status = 400;
+           Logger.info("Exception "+error.message);
            responseDTO.message = error.message; 
         }  
 
@@ -205,6 +231,7 @@ BookingRouter.post("/:id/payment", [param("id", "ID is missing")],async (request
         } catch (error) {
            status = 400;
            responseDTO.message = error.message; 
+           Logger.info("Exception "+error.message);
         }  
 
         response.status(status).json(responseDTO);
