@@ -43,3 +43,31 @@
  /tmp/application_error.log
  ```
 
+## For authentication please follow the steps
+- Run following command to create user from terminal
+
+curl -X POST \
+  http://localhost:3000/auth-users \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: c2fde45f-9f3f-5cdb-736b-b59e97b80d9d' \
+  -d '{
+	"username": "admin",
+	"password": "1234Abc!"
+}'```
+
+- To generate a token run following command
+
+```
+curl -X POST \
+  http://localhost:3000/auth-users/authenticate \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 1fcd7c48-29d5-7bc2-0a6d-f274c0d6f774' \
+  -d '{
+	"username": "admin",
+	"password": "1234Abc!"
+}'
+```
+
+```
