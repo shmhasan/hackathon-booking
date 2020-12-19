@@ -52,8 +52,8 @@ curl -X POST \
   -H 'content-type: application/json' \
   -H 'postman-token: c2fde45f-9f3f-5cdb-736b-b59e97b80d9d' \
   -d '{
-	"username": "admin",
-	"password": "1234Abc!"
+	"username": YOUR_USERNAME,
+	"password": YOUR_PASSWORD
 }'
 ```
 
@@ -66,9 +66,9 @@ curl -X POST \
   -H 'content-type: application/json' \
   -H 'postman-token: 1fcd7c48-29d5-7bc2-0a6d-f274c0d6f774' \
   -d '{
-	"username": "admin",
-	"password": "1234Abc!"
+	"username": YOUR_USERNAME,
+	"password": YOUR_PASSWORD
 }'
 ```
 
-```
+- Use the token to pass from the swagger authorize button
