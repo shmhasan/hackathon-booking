@@ -1,12 +1,16 @@
 {
   "dependencies": {
+    "@types/swagger-ui-express": "^4.1.2",
+    "@types/yamljs": "^0.2.31",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^4.1.1",
+    "swagger-ui-express": "^4.1.5",
     "typeorm": "^0.2.22",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.0",
