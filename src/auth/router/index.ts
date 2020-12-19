@@ -11,8 +11,8 @@ import { Logger } from "../../config/Logger";
 AuthRouter.post("/", async (request: Request, response: Response) => {
     Logger.info("Auth payload"+ JSON.stringify(request.body));
     try {
-        // const user = await AuthService.createAuth("admin", "1234Abc!");
-        response.json(request.body);
+        const user = await AuthService.createAuth(request.body.username,request.body.password);
+        response.json(user);
     } catch (error) {
         response.status(400).json({message: error.message});
     }
