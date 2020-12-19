@@ -4,7 +4,8 @@ import fs from "fs";
 if(fs.existsSync(".env")) {
     dotenv.config({path: ".env"});
 }else {
-    throw new Error("Missing environment file"); 
+    // throw new Error("Missing environment file"); 
+    console.log("Missing env file");
 }
 
 

@@ -4,10 +4,8 @@ info:
   description: Hotel Management Rest 
   version: 0.0.1
 servers:
-  - url: http://192.168.68.105:3000
+  - url: http://localhost:3000
     description: Optional server description, e.g. Main (production) server
-  - url: http://staging-api.example.com
-    description: Optional server description, e.g. Internal staging server for testing
 paths:
   /rooms:
     get:

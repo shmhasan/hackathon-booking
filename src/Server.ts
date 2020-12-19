@@ -22,7 +22,7 @@ App.use(bodyParser.urlencoded({ extended: true }));
 /**
  * Rester Routers
  */
-App.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+App.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 App.use("/auth-users", AuthRouter);
 App.use("/rooms", RoomRouter);

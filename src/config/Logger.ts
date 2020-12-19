@@ -5,11 +5,11 @@ export const Logger = winston.createLogger({
     transports: [
         new transports.File({
             dirname: Constants.LOG_DIR,
-            filename: "inventory.log"
+            filename: "application.log"
         }),
         new transports.File({
             dirname: Constants.LOG_DIR,
-            filename: "inventory_error.log",
+            filename: "application_error.log",
             level: "error"
         })
     ]
