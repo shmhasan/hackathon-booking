@@ -45,7 +45,7 @@
 
 ## For authentication please follow the steps
 - Run following command to create user from terminal
-
+```
 curl -X POST \
   http://localhost:3000/auth-users \
   -H 'cache-control: no-cache' \
@@ -54,7 +54,8 @@ curl -X POST \
   -d '{
 	"username": "admin",
 	"password": "1234Abc!"
-}'```
+}'
+```
 
 - To generate a token run following command
 
